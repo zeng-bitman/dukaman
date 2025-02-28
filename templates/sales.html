@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sales</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
+    <style>
+        .navbar {
+            background-color: grey;
+            color: black;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .navbar span {
+            color: blue;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .image {
+            padding: 50px;
+            background-color: grey;
+        }
+
+        .footer {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: rgb(0, 0, 0);
+            padding: 10px;
+        }
+
+        .footer a {
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .footer a:hover {
+            color: #119ABF;
+        }
+
+        .footer p {
+            color: rgb(0, 0, 0);
+            list-style: none;
+        }
+
+        .footer p:hover {
+            color: #119ABF;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+
+    <!-- <div class="navbar"> -->
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="/static/images/store-4156934_1280.webp" alt="..." width="50" height="35"
+                    class="d-inline-block align-text-top"><span>My</span>Duka</a>
+
+            <div class="d-flex">
+                <a href="/"><span>Home</span></a>
+                <a href="/about">about</a>
+                <a href="/contactus">contact us</a>
+                <a href="/sales">sales</a>
+                <a href="/products">Products</a>
+                <a href="/dashboard">dashboard</a>
+                <a href="/register">register</a>
+            </div>
+    </nav>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">sales</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add to Records</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/sales" method="POST">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Product name</label>
+                            <select name="pid" id="">
+                                {% for p in products %}
+                                <option value="{{p[0]}}">{{p[1]}}</option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Quantity</label>
+                            <!-- <input name="" type="" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp"> -->
+                            <input name="quant" type="number" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+
+                        </div>
+                        <!-- <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">created_at</label>
+                            <input name="time" type="number" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+                        </div> -->
+                        <!-- <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Selling price</label>
+                            <input name="sp" type="number" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+                        </div> -->
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- {{sales}} -->
+
+
+    <!-- <TABLE></TABLE> -->
+
+    <table id="myTable" class="table table-striped table-bordered" , style="width:50%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Pid</th>
+                <th>Quantity</th>
+                <th>Created at</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for s in sales %}
+
+            <tr>
+                <td>{{s[0]}}</td>
+                <td>{{s[1]}}</td>
+                <td>{{s[2]}}</td>
+                <td>{{s[3]}}</td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <!-- cdnjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- data table sytle -->
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+
+    <!-- initialising -->
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });    </script>
+
+
+    <div class="footer">
+        <footer class="footer" style="text-align: center; padding: 10px;">
+            <h2>Follow us on social media</h2>
+            <ul class="social-media"
+                style="list-style-type: none; justify-content: center; display: flex; margin: 10px;">
+                <li><a href="www.facebook.com"> <i class="fa-brands fa-facebook fa-beat-fade"
+                            style="color: #1471eb;"></i></a>
+                </li>
+                <li><a href="www.facebook.com"> <i class="fa-brands fa-square-instagram fa-beat-fade"
+                            style="color: #e098e1;"></i></a></li>
+                <li><a href="https://www.facebook.com/"> <i class="fa-brands fa-x-twitter fa-beat-fade"
+                            style="color: #000000;"></i></a></li>
+            </ul>
+            <hr class="bg-light">
+            <div class="text-center">
+                <p>&copy; 2025 MyDuka by ZENG BIT-MAN.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
