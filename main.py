@@ -3,6 +3,10 @@ from database import conn,cur
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+cur.execute("CREATE TABLE IF NOT EXISTS products(id serial PRIMARY KEY, name VARCHAR(100), buying_price FLOAT, selling_price FLOAT, stock_quantity INT)");
+cur.execute("CREATE TABLE IF NOT EXISTS sales(id serial PRIMARY KEY, pid INT, quantity INT, created_at TIMESTAMP,CONSTRAINT myproduct FOREIGN KEY(pid) references products(id) on UPDATE cascade on DELETE restrict)");
+conn.commit()
+
 @app.route("/")
 def hello():
     return render_template("index.html")
