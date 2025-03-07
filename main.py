@@ -41,7 +41,16 @@ def products():
 @app.route("/sales",methods=["GET","POST"])
 def sales():
     if request.method == "GET":
-        cur.execute("SELECT * FROM sales")
+        
+        # cur.execute("SELECT * FROM sales") #old query
+        # sales = cur.fetchall()
+
+#new query with formatted date
+        cur.execute("""
+            SELECT id, pid, quantity, 
+                   TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at 
+            FROM sales
+        """)
         sales = cur.fetchall()
 
         cur.execute("SELECT * from products")
@@ -63,7 +72,6 @@ def sales():
         conn.commit()
         return redirect("/sales")
 
-
 @app.route("/dashboard")
 def dashboard():
     cur.execute("SELECT products.name AS product_name, SUM(sales.quantity * (products.selling_price - products.buying_price)) AS total_profit FROM sales JOIN products ON products.id = sales.pid GROUP BY products.name")
@@ -78,6 +86,50 @@ def dashboard():
     profit_results= cur.fetchall()
 
     return render_template("dashboard.html", x=x,y=y, profit_results=profit_results)
+
+cur.execute("""
+    WITH daily_sales AS (
+        SELECT 
+            SUM ((p.selling_price - p.buying_price) * s.quantity) AS sales, 
+            s.created_at::DATE AS sale_date
+        FROM 
+            sales AS s
+        JOIN 
+            products AS p 
+        ON 
+            p.id = s.pid
+        GROUP BY 
+            s.created_at::DATE
+    ),
+    daily_expenses AS (
+        SELECT 
+            SUM(amount) AS total_expenses, 
+            purchase_date::DATE AS expense_date
+        FROM
+    purchases
+        GROUP BY 
+            purchase_date::DATE
+    )
+    SELECT 
+        s.sale_date AS profit_date,
+        COALESCE(s.sales, 0) - COALESCE(e.total_expenses, 0) AS final_profit
+    FROM 
+        daily_sales AS s
+    FULL OUTER JOIN 
+        daily_expenses AS e
+    ON 
+        s.sale_date = e.expense_date
+    WHERE
+        s.sale_date = '2025-03-07' OR e.expense_date = '2025-03-07'
+""")
+profit_results = cur.fetchall()
+print(profit_results)
+
+
+
+
+
+
 
 
 @app.route("/register", methods=["GET", "POST"])

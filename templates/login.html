@@ -54,12 +54,16 @@
         </div>
         <div class="flex"
             style="display: flex; justify-content: space-around; padding: 10px; background-color: #f8f9fa">
-            <a href="/"><span>Home</span></a>
-            <a href="/about">about</a>
-            <a href="/contactus">contact us</a>
-            <a href="/register">register</a>
-            <!-- <a href="/login">log/in</a> -->
-        </div>
+            <div class="d-flex">
+                <a href="/"><span>Home</span></a>
+                <a href="/about">about</a>
+                <a href="/contactus">contact us</a>
+                <a href="/sales">sales</a>
+                <a href="/products">Products</a>
+                <a href="/dashboard">dashboard</a>
+                <a href="/register">register</a>
+                <a href="/login">login</a>
+            </div>
     </nav>
 
     <h5 style="margin: auto;width: 50%; color: #004b60;">LOGIN</h5>
@@ -74,7 +78,8 @@
     {% endif %}
     {% endwith %}
 
-    <form action="/login" method="post" style="display: flex; flex-direction: column; gap: 15px; width: 50%; margin: auto;">
+    <form action="/login" method="post"
+        style="display: flex; flex-direction: column; gap: 15px; width: 50%; margin: auto;">
         <label for="email">Email</label>
         <input type="email" name="emailaddress" id="email" required placeholder="Enter your email address">
 
