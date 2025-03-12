@@ -163,6 +163,37 @@ def expenses():
         conn.commit()
 
         return redirect("/expenses")
+    
 
+@app.route("/stock", methods=["GET", "POST"])
+def stock():
+    if request.method == "GET":
+        cur.execute("SELECT * FROM stock")
+        stock = cur.fetchall()
+
+        # return render_template("stock.html", stock=stock)
+        
+        cur.execute("SELECT * FROM products")
+        products = cur.fetchall()
+
+        return render_template("stock.html", stock=stock, products=products)
+    
+    else:
+        pid = request.form["pid"]
+        stock_quantity = int(request.form["sq"])
+
+        cur.execute("SELECT id FROM stock WHERE pid = %s", (pid,))
+        existing_stock = cur.fetchone()
+
+        if existing_stock:
+            query_update_stock = "UPDATE stock SET stock_quantity = %s WHERE pid = %s" 
+            cur.execute(query_update_stock, (stock_quantity, pid))
+            conn.commit()
+        else:
+            query_create_stock = "INSERT INTO stock (pid, stock_quantity) VALUES (%s, %s)"
+            cur.execute(query_create_stock, (pid, stock_quantity))
+            conn.commit()
+
+        return redirect("/stock")
 if __name__ == "__main__":
     app.run(debug=True)
